@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+>
+<script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+    <title>GoURL</title>
+
+    <script> 
+        
+    </script>
+
+  </head>
+  <body>
+    <main class="container">
+        <nav>
+            <ul>
+              <li><strong>GoURL Shortener</strong></li>
+            </ul>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Login</a></li>
+              <li><a href="#">Signup</a></li>
+            </ul>
+          </nav>
+
+      <h3 style="padding-top: 20px;"> Make it shorter</h3>
+      <form
+      hx-post="/shorten"
+      hx-target="#response"
+      hx-swap="innerHTML"
+      >
+        <fieldset role="group">
+          <input
+            type="url"
+            name="url"
+            placeholder="Enter your long link"
+            required
+          />
+          <input 
+           
+          type="submit" value="Shorten" />
+        </fieldset>
+      </form>
+
+      <div id="response">
+
+      </div>
+
+      <h3> FAQs </h3>
+      <details open>
+        <summary>Why me?</summary>
+        <p>No real reason actually, I'm pretty much identical to all other 
+            url shorteners out there. But I'm made in Go so props?
+            Did I also mention that I'm good for up to 1000 redirects a day?
+        </p>
+        <p style="padding-top: 20px;"> For all users 😅</p>
+      </details>
+      
+      <hr />
+      
+      <details>
+        <summary>Am I here to stay?</summary>
+        <p> Yes! I am here to stay for as long as heroku lets me xD </p>
+      </details>
+
+      <hr /> 
+
+      <details>
+        <summary> Do people actually asks these? </summary>
+        <p> No, no they don't 🫠</p>
+      </details>
+
+      <hr />
+
+    </main>
+  </body>
+</html>
