@@ -9,10 +9,16 @@ import (
 
 	"database/sql"
 
+	_ "embed"
+
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mazen160/go-random"
 )
+
+//go:embed templates/index.html
+
+var content template.HTML
 
 const file string = "routes.db"
 
@@ -201,8 +207,6 @@ func main() {
 
 			if isUniqueEntry(db, data) {
 
-				fmt.Println("Should not be here")
-
 				shrt, urlError := shortenURL(data)
 
 				if urlError != nil {
@@ -210,7 +214,7 @@ func main() {
 					return
 				}
 
-				retString := fmt.Sprintf("localhost:9032/url/%v", shrt)
+				retString := fmt.Sprintf("go.filetree.tech/url/%v", shrt)
 
 				tmpRoute := urlRoute{longURL: data, shortURL: shrt}
 				_, insertErr := insertRoute(db, tmpRoute)
@@ -232,8 +236,6 @@ func main() {
 				tmpl.Execute(w, ret)
 
 			} else {
-
-				fmt.Println("Should be here")
 
 				df := urlRoute{longURL: data, shortURL: ""}
 
