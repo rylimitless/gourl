@@ -36,16 +36,16 @@ type urlRoute struct {
 }
 
 func initDBConnection() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "test.db")
+	db, err := sql.Open("sqlite3", "database/urls.db")
 	if err == nil {
 		_, err := db.Exec(createTable)
 		if err == nil {
 			return db, nil
 		} else {
-			fmt.Println(err)
 			return nil, errors.New("Unable to open database")
 		}
 	} else {
+		fmt.Println(err)
 		return nil, errors.New("Unable to open database")
 	}
 }
@@ -210,17 +210,19 @@ func main() {
 				shrt, urlError := shortenURL(data)
 
 				if urlError != nil {
+					fmt.Println(e)
 					fmt.Fprintln(w, errMsg)
 					return
 				}
 
-				retString := fmt.Sprintf("go.filetree.tech/url/%v", shrt)
+				retString := fmt.Sprintf("https://go.filetree.tech/url/%v", shrt)
 
 				tmpRoute := urlRoute{longURL: data, shortURL: shrt}
 				_, insertErr := insertRoute(db, tmpRoute)
 				e = insertErr
 
 				if e != nil || templateErr != nil {
+					fmt.Println(e)
 					fmt.Fprintln(w, errMsg)
 					return
 				} else {
@@ -246,7 +248,7 @@ func main() {
 					return
 				}
 
-				retString := fmt.Sprintf("localhost:9032/url/%v", df.shortURL)
+				retString := fmt.Sprintf("https://go.filetree.tech/url/%v", df.shortURL)
 
 				ret := struct {
 					ShortURL string
@@ -262,6 +264,6 @@ func main() {
 		}
 	})
 
-	http.ListenAndServe(":9032", router)
+	http.ListenAndServe("0.0.0.0:9032", router)
 
 }
