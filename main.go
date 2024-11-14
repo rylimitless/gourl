@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 
 	"database/sql"
 
@@ -45,7 +46,7 @@ func initDBConnection() (*sql.DB, error) {
 			return nil, errors.New("Unable to open database")
 		}
 	} else {
-		fmt.Println(err)
+		log.Println(err)
 		return nil, errors.New("Unable to open database")
 	}
 }
@@ -82,13 +83,13 @@ func getRoute(db *sql.DB, s *urlRoute) error {
 		for rows.Next() {
 			err := rows.Scan(&s.longURL, &s.shortURL)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 				return errors.New("Unable to get redirect root")
 			}
 		}
 		rows.Close()
 	} else {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	return err
@@ -101,13 +102,13 @@ func getLongRoute(db *sql.DB, s *urlRoute) error {
 		for rows.Next() {
 			err := rows.Scan(&s.longURL, &s.shortURL)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 				return errors.New("Unable to get redirect root")
 			}
 		}
 		rows.Close()
 	} else {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	return err
@@ -125,7 +126,7 @@ func isUniqueEntry(db *sql.DB, url string) bool {
 		for rows.Next() {
 			err := rows.Scan(&h.longURL, &h.shortURL)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 				return false
 			}
 		}
@@ -144,7 +145,7 @@ func main() {
 
 	defer db.Close()
 
-	fmt.Println("Hello World")
+	log.Println("Server Started on port 9032")
 
 	router := mux.NewRouter()
 
@@ -210,7 +211,7 @@ func main() {
 				shrt, urlError := shortenURL(data)
 
 				if urlError != nil {
-					fmt.Println(e)
+					log.Println(e)
 					fmt.Fprintln(w, errMsg)
 					return
 				}
@@ -222,11 +223,11 @@ func main() {
 				e = insertErr
 
 				if e != nil || templateErr != nil {
-					fmt.Println(e)
+					log.Println(e)
 					fmt.Fprintln(w, errMsg)
 					return
 				} else {
-					fmt.Println(e)
+					log.Println(e)
 				}
 
 				ret := struct {
@@ -264,6 +265,13 @@ func main() {
 		}
 	})
 
-	http.ListenAndServe("0.0.0.0:9032", router)
+	srv := &http.Server{
+		Handler:      router,
+		Addr:         "0.0.0.0:9032",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	log.Fatal(srv.ListenAndServe())
 
 }

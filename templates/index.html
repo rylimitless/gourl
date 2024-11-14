@@ -18,16 +18,20 @@
   </head>
   <body>
     <main class="container">
-        <nav>
-            <ul>
-              <li><strong>GoURL Shortener</strong></li>
-            </ul>
-            <ul>
-              <li><a href="#">About</a></li>
-            </ul>
-          </nav>
+      
+      <nav>
+        <ul> 
+          <li> 
+            <strong> GoURL Shortener <strong> 
+          </li>
+          
+        </ul>
+      </nav>
 
-      <h3 style="padding-top: 20px;"> Make it shorter</h3>
+      <p> <em> A simple and open no thrills URL shortener for lazy individuals  </em></p>
+
+      <h6> Paste your long link here </h6>
+
       <form
       hx-post="/shorten"
       hx-target="#response"
@@ -37,7 +41,7 @@
           <input
             type="url"
             name="url"
-            placeholder="Enter your long link"
+            placeholder="https://example.com/longurlxyz..."
             required
           />
           <input 
@@ -64,7 +68,7 @@
       
       <details>
         <summary>Is there a limit to the amount of url's I can make?</summary>
-        <p> Yes actually, about 10GB worth</p>
+        <p> Yes actually, about 20GB worth</p>
       </details>
 
       <hr /> 
